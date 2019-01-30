@@ -1,0 +1,598 @@
+
+glcd_library.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000002aa  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  0000031e  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000403  00800060  00800060  0000031e  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  0000031e  2**0
+                  CONTENTS, READONLY
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000350  2**2
+                  CONTENTS, READONLY
+  5 .debug_aranges 000000a8  00000000  00000000  0000038c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   00000d45  00000000  00000000  00000434  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 000007a0  00000000  00000000  00001179  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   00000641  00000000  00000000  00001919  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  00000178  00000000  00000000  00001f5c  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    0000049c  00000000  00000000  000020d4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_loc    00000851  00000000  00000000  00002570  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_ranges 00000088  00000000  00000000  00002dc1  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   8:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  10:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  14:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  18:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  1c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  20:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  24:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  28:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  2c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  30:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  34:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  38:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  3c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  40:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  44:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  48:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  4c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  50:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_clear_bss>:
+  60:	24 e0       	ldi	r18, 0x04	; 4
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	01 c0       	rjmp	.+2      	; 0x6a <.do_clear_bss_start>
+
+00000068 <.do_clear_bss_loop>:
+  68:	1d 92       	st	X+, r1
+
+0000006a <.do_clear_bss_start>:
+  6a:	a3 36       	cpi	r26, 0x63	; 99
+  6c:	b2 07       	cpc	r27, r18
+  6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
+  70:	0e 94 28 01 	call	0x250	; 0x250 <main>
+  74:	0c 94 53 01 	jmp	0x2a6	; 0x2a6 <_exit>
+
+00000078 <__bad_interrupt>:
+  78:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000007c <glcd_enable_controller>:
+	glcd_enable_controller(0);
+ }
+
+ void glcd_enable_controller(uint8_t controller_nr)
+ {
+	 if(controller_nr)
+  7c:	88 23       	and	r24, r24
+  7e:	31 f0       	breq	.+12     	; 0x8c <glcd_enable_controller+0x10>
+	 {
+		enabled_controller = 1;
+  80:	81 e0       	ldi	r24, 0x01	; 1
+  82:	80 93 62 04 	sts	0x0462, r24	; 0x800462 <enabled_controller>
+		controller_port &= ~CS2;
+  86:	da 98       	cbi	0x1b, 2	; 27
+		controller_port |= CS1;
+  88:	db 9a       	sbi	0x1b, 3	; 27
+  8a:	08 95       	ret
+	 }
+	 else
+	 {
+		enabled_controller = 0;
+  8c:	10 92 62 04 	sts	0x0462, r1	; 0x800462 <enabled_controller>
+		controller_port &= ~CS1;
+  90:	db 98       	cbi	0x1b, 3	; 27
+		controller_port |= CS2;
+  92:	da 9a       	sbi	0x1b, 2	; 27
+  94:	08 95       	ret
+
+00000096 <glcd_command>:
+	 }
+ }
+
+ void glcd_command(uint8_t command)
+ {
+	data_ddr = DATA_WRITE;
+  96:	9f ef       	ldi	r25, 0xFF	; 255
+  98:	94 bb       	out	0x14, r25	; 20
+
+	controller_port |= E;
+  9a:	d8 9a       	sbi	0x1b, 0	; 27
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  9c:	9a e1       	ldi	r25, 0x1A	; 26
+  9e:	9a 95       	dec	r25
+  a0:	f1 f7       	brne	.-4      	; 0x9e <glcd_command+0x8>
+  a2:	00 c0       	rjmp	.+0      	; 0xa4 <glcd_command+0xe>
+	_delay_us(E_RISE_TIME);
+
+	data_port = command;
+  a4:	85 bb       	out	0x15, r24	; 21
+
+	controller_port &= ~E;
+  a6:	d8 98       	cbi	0x1b, 0	; 27
+  a8:	85 e3       	ldi	r24, 0x35	; 53
+  aa:	8a 95       	dec	r24
+  ac:	f1 f7       	brne	.-4      	; 0xaa <glcd_command+0x14>
+  ae:	00 00       	nop
+  b0:	08 95       	ret
+
+000000b2 <glcd_enable_mirroring_controllers>:
+	glcd_clear_screen_data();
+ }
+
+ void glcd_enable_mirroring_controllers()
+ {
+	controller_port &= ~(CS2 | CS1);
+  b2:	8b b3       	in	r24, 0x1b	; 27
+  b4:	83 7f       	andi	r24, 0xF3	; 243
+  b6:	8b bb       	out	0x1b, r24	; 27
+  b8:	08 95       	ret
+
+000000ba <glcd_write_data>:
+ }
+
+ void glcd_write_data(uint8_t byte)
+ {
+  ba:	cf 93       	push	r28
+  bc:	c8 2f       	mov	r28, r24
+	controller_port |= RS;
+  be:	d9 9a       	sbi	0x1b, 1	; 27
+
+	glcd_command(byte);
+  c0:	0e 94 4b 00 	call	0x96	; 0x96 <glcd_command>
+
+	screen_data[glcd_y*(1+enabled_controller)][glcd_x] = byte;
+  c4:	80 91 61 04 	lds	r24, 0x0461	; 0x800461 <glcd_y>
+  c8:	20 91 62 04 	lds	r18, 0x0462	; 0x800462 <enabled_controller>
+  cc:	30 e0       	ldi	r19, 0x00	; 0
+  ce:	2f 5f       	subi	r18, 0xFF	; 255
+  d0:	3f 4f       	sbci	r19, 0xFF	; 255
+  d2:	82 9f       	mul	r24, r18
+  d4:	f0 01       	movw	r30, r0
+  d6:	83 9f       	mul	r24, r19
+  d8:	f0 0d       	add	r31, r0
+  da:	11 24       	eor	r1, r1
+  dc:	90 91 60 00 	lds	r25, 0x0060	; 0x800060 <_edata>
+  e0:	ee 0f       	add	r30, r30
+  e2:	ff 1f       	adc	r31, r31
+  e4:	ee 0f       	add	r30, r30
+  e6:	ff 1f       	adc	r31, r31
+  e8:	ee 0f       	add	r30, r30
+  ea:	ff 1f       	adc	r31, r31
+  ec:	ef 59       	subi	r30, 0x9F	; 159
+  ee:	ff 4f       	sbci	r31, 0xFF	; 255
+  f0:	e9 0f       	add	r30, r25
+  f2:	f1 1d       	adc	r31, r1
+  f4:	c0 83       	st	Z, r28
+
+	glcd_y++;
+	glcd_y %= SINGLE_CONTROLLER_SCREEN_WIDTH;
+  f6:	8f 5f       	subi	r24, 0xFF	; 255
+  f8:	8f 73       	andi	r24, 0x3F	; 63
+  fa:	80 93 61 04 	sts	0x0461, r24	; 0x800461 <glcd_y>
+
+	controller_port &= ~RS;
+  fe:	d9 98       	cbi	0x1b, 1	; 27
+ }
+ 100:	cf 91       	pop	r28
+ 102:	08 95       	ret
+
+00000104 <glcd_clear>:
+	controller_port &= ~E;
+	_delay_us(E_FALL_TIME + DATA_WRITE_TIME);
+ }
+
+ void glcd_clear()
+ {
+ 104:	1f 93       	push	r17
+ 106:	cf 93       	push	r28
+ 108:	df 93       	push	r29
+	 glcd_command(SET_Y(0));
+ 10a:	80 e4       	ldi	r24, 0x40	; 64
+ 10c:	80 93 61 04 	sts	0x0461, r24	; 0x800461 <glcd_y>
+ 110:	0e 94 4b 00 	call	0x96	; 0x96 <glcd_command>
+ 114:	10 e0       	ldi	r17, 0x00	; 0
+
+	 for (int i=0; i<SCREEN_HEIGHT/BITS_IN_BYTE; i++)
+	 {
+		 glcd_command(SET_X(i));
+ 116:	81 2f       	mov	r24, r17
+ 118:	88 6b       	ori	r24, 0xB8	; 184
+ 11a:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <_edata>
+ 11e:	0e 94 4b 00 	call	0x96	; 0x96 <glcd_command>
+ 122:	c0 e4       	ldi	r28, 0x40	; 64
+ 124:	d0 e0       	ldi	r29, 0x00	; 0
+		 for (int j=0; j<SINGLE_CONTROLLER_SCREEN_WIDTH; j++)
+		 {
+			glcd_write_data(0);
+ 126:	80 e0       	ldi	r24, 0x00	; 0
+ 128:	0e 94 5d 00 	call	0xba	; 0xba <glcd_write_data>
+ 12c:	21 97       	sbiw	r28, 0x01	; 1
+	 glcd_command(SET_Y(0));
+
+	 for (int i=0; i<SCREEN_HEIGHT/BITS_IN_BYTE; i++)
+	 {
+		 glcd_command(SET_X(i));
+		 for (int j=0; j<SINGLE_CONTROLLER_SCREEN_WIDTH; j++)
+ 12e:	d9 f7       	brne	.-10     	; 0x126 <glcd_clear+0x22>
+ 130:	1f 5f       	subi	r17, 0xFF	; 255
+
+ void glcd_clear()
+ {
+	 glcd_command(SET_Y(0));
+
+	 for (int i=0; i<SCREEN_HEIGHT/BITS_IN_BYTE; i++)
+ 132:	18 30       	cpi	r17, 0x08	; 8
+ 134:	81 f7       	brne	.-32     	; 0x116 <glcd_clear+0x12>
+		 {
+			glcd_write_data(0);
+		 }
+	 }
+
+	 glcd_command(SET_X(0));
+ 136:	88 eb       	ldi	r24, 0xB8	; 184
+ 138:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <_edata>
+ 13c:	0e 94 4b 00 	call	0x96	; 0x96 <glcd_command>
+ }
+ 140:	df 91       	pop	r29
+ 142:	cf 91       	pop	r28
+ 144:	1f 91       	pop	r17
+ 146:	08 95       	ret
+
+00000148 <glcd_init>:
+uint8_t enabled_controller;
+uint8_t screen_data[SCREEN_WIDTH][SCREEN_HEIGHT/BITS_IN_BYTE];
+
+ void glcd_init()
+ {
+	data_ddr = DATA_WRITE;
+ 148:	8f ef       	ldi	r24, 0xFF	; 255
+ 14a:	84 bb       	out	0x14, r24	; 20
+	controller_ddr |= E | RS | CS2 | CS1;
+ 14c:	8a b3       	in	r24, 0x1a	; 26
+ 14e:	8f 60       	ori	r24, 0x0F	; 15
+ 150:	8a bb       	out	0x1a, r24	; 26
+
+	uint8_t screen_count = SCREEN_WIDTH/SINGLE_CONTROLLER_SCREEN_WIDTH;
+
+	glcd_enable_mirroring_controllers();
+ 152:	0e 94 59 00 	call	0xb2	; 0xb2 <glcd_enable_mirroring_controllers>
+	glcd_command(DISPLAY_ON);
+ 156:	8f e3       	ldi	r24, 0x3F	; 63
+ 158:	0e 94 4b 00 	call	0x96	; 0x96 <glcd_command>
+	glcd_command(DISPLAY_LINE_START(0));
+ 15c:	80 ec       	ldi	r24, 0xC0	; 192
+ 15e:	0e 94 4b 00 	call	0x96	; 0x96 <glcd_command>
+	glcd_clear();
+ 162:	0e 94 82 00 	call	0x104	; 0x104 <glcd_clear>
+	glcd_enable_controller(0);
+ 166:	80 e0       	ldi	r24, 0x00	; 0
+ 168:	0e 94 3e 00 	call	0x7c	; 0x7c <glcd_enable_controller>
+ 16c:	08 95       	ret
+
+0000016e <glcd_clear_screen_data>:
+		}
+	}
+}
+
+void glcd_clear_screen_data()
+{
+ 16e:	e1 e6       	ldi	r30, 0x61	; 97
+ 170:	f0 e0       	ldi	r31, 0x00	; 0
+ 172:	21 e6       	ldi	r18, 0x61	; 97
+ 174:	34 e0       	ldi	r19, 0x04	; 4
+ 176:	08 c0       	rjmp	.+16     	; 0x188 <glcd_clear_screen_data+0x1a>
+	for (uint8_t i=0; i<SCREEN_WIDTH; i++)
+	{
+		for(uint8_t j = 0; j<SCREEN_HEIGHT/BITS_IN_BYTE; j++)
+		{
+			screen_data[i][j] = 0;
+ 178:	11 92       	st	Z+, r1
+
+void glcd_clear_screen_data()
+{
+	for (uint8_t i=0; i<SCREEN_WIDTH; i++)
+	{
+		for(uint8_t j = 0; j<SCREEN_HEIGHT/BITS_IN_BYTE; j++)
+ 17a:	e8 17       	cp	r30, r24
+ 17c:	f9 07       	cpc	r31, r25
+ 17e:	e1 f7       	brne	.-8      	; 0x178 <glcd_clear_screen_data+0xa>
+ 180:	fc 01       	movw	r30, r24
+	}
+}
+
+void glcd_clear_screen_data()
+{
+	for (uint8_t i=0; i<SCREEN_WIDTH; i++)
+ 182:	28 17       	cp	r18, r24
+ 184:	39 07       	cpc	r19, r25
+ 186:	19 f0       	breq	.+6      	; 0x18e <glcd_clear_screen_data+0x20>
+ 188:	cf 01       	movw	r24, r30
+ 18a:	08 96       	adiw	r24, 0x08	; 8
+ 18c:	f5 cf       	rjmp	.-22     	; 0x178 <glcd_clear_screen_data+0xa>
+ 18e:	08 95       	ret
+
+00000190 <glcd_clear_all>:
+	 glcd_command(SET_X(0));
+ }
+
+ void glcd_clear_all()
+ {
+	glcd_enable_mirroring_controllers();
+ 190:	0e 94 59 00 	call	0xb2	; 0xb2 <glcd_enable_mirroring_controllers>
+	glcd_clear();
+ 194:	0e 94 82 00 	call	0x104	; 0x104 <glcd_clear>
+	glcd_enable_controller(0);
+ 198:	80 e0       	ldi	r24, 0x00	; 0
+ 19a:	0e 94 3e 00 	call	0x7c	; 0x7c <glcd_enable_controller>
+	glcd_clear_screen_data();
+ 19e:	0e 94 b7 00 	call	0x16e	; 0x16e <glcd_clear_screen_data>
+ 1a2:	08 95       	ret
+
+000001a4 <glcd_set_y>:
+//////////////////////////////////////////////////////////////////////////
+////////COMMANDS
+//////////////////////////////////////////////////////////////////////////
+
+void glcd_set_y(uint8_t y)
+{
+ 1a4:	cf 93       	push	r28
+ 1a6:	c8 2f       	mov	r28, r24
+	glcd_command(SET_Y(y));
+ 1a8:	80 64       	ori	r24, 0x40	; 64
+ 1aa:	80 93 61 04 	sts	0x0461, r24	; 0x800461 <glcd_y>
+ 1ae:	0e 94 4b 00 	call	0x96	; 0x96 <glcd_command>
+	glcd_y = y;
+ 1b2:	c0 93 61 04 	sts	0x0461, r28	; 0x800461 <glcd_y>
+}
+ 1b6:	cf 91       	pop	r28
+ 1b8:	08 95       	ret
+
+000001ba <glcd_set_x>:
+
+void glcd_set_x(uint8_t x)
+{
+ 1ba:	cf 93       	push	r28
+ 1bc:	c8 2f       	mov	r28, r24
+	glcd_command(SET_X(x));
+ 1be:	88 6b       	ori	r24, 0xB8	; 184
+ 1c0:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <_edata>
+ 1c4:	0e 94 4b 00 	call	0x96	; 0x96 <glcd_command>
+	glcd_x = x;
+ 1c8:	c0 93 60 00 	sts	0x0060, r28	; 0x800060 <_edata>
+ 1cc:	cf 91       	pop	r28
+ 1ce:	08 95       	ret
+
+000001d0 <glcd_set_cursor>:
+
+	controller_port &= ~RS;
+ }
+
+ void glcd_set_cursor(uint8_t x, uint8_t y)
+ {
+ 1d0:	cf 93       	push	r28
+ 1d2:	df 93       	push	r29
+ 1d4:	c8 2f       	mov	r28, r24
+ 1d6:	d6 2f       	mov	r29, r22
+	uint8_t row = y/BITS_IN_BYTE;
+	uint8_t column = x % SINGLE_CONTROLLER_SCREEN_WIDTH;
+	uint8_t controller = x/SINGLE_CONTROLLER_SCREEN_WIDTH;
+
+	glcd_enable_controller(controller);
+ 1d8:	82 95       	swap	r24
+ 1da:	86 95       	lsr	r24
+ 1dc:	86 95       	lsr	r24
+ 1de:	83 70       	andi	r24, 0x03	; 3
+ 1e0:	0e 94 3e 00 	call	0x7c	; 0x7c <glcd_enable_controller>
+	glcd_set_x(row);
+ 1e4:	8d 2f       	mov	r24, r29
+ 1e6:	86 95       	lsr	r24
+ 1e8:	86 95       	lsr	r24
+ 1ea:	86 95       	lsr	r24
+ 1ec:	0e 94 dd 00 	call	0x1ba	; 0x1ba <glcd_set_x>
+	glcd_set_y(column);
+ 1f0:	8c 2f       	mov	r24, r28
+ 1f2:	8f 73       	andi	r24, 0x3F	; 63
+ 1f4:	0e 94 d2 00 	call	0x1a4	; 0x1a4 <glcd_set_y>
+ }
+ 1f8:	df 91       	pop	r29
+ 1fa:	cf 91       	pop	r28
+ 1fc:	08 95       	ret
+
+000001fe <glcd_set_pixel>:
+
+ void glcd_set_pixel(uint8_t x, uint8_t y)
+ {
+ 1fe:	cf 93       	push	r28
+ 200:	c6 2f       	mov	r28, r22
+	uint8_t pixel = y%BITS_IN_BYTE;
+	glcd_set_cursor(x,y);
+ 202:	0e 94 e8 00 	call	0x1d0	; 0x1d0 <glcd_set_cursor>
+
+	uint8_t page_state = screen_data[glcd_y*(1+enabled_controller)][glcd_x] | 1 << pixel;
+ 206:	80 91 62 04 	lds	r24, 0x0462	; 0x800462 <enabled_controller>
+ 20a:	90 e0       	ldi	r25, 0x00	; 0
+ 20c:	01 96       	adiw	r24, 0x01	; 1
+ 20e:	20 91 61 04 	lds	r18, 0x0461	; 0x800461 <glcd_y>
+ 212:	28 9f       	mul	r18, r24
+ 214:	f0 01       	movw	r30, r0
+ 216:	29 9f       	mul	r18, r25
+ 218:	f0 0d       	add	r31, r0
+ 21a:	11 24       	eor	r1, r1
+ 21c:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <_edata>
+ 220:	ee 0f       	add	r30, r30
+ 222:	ff 1f       	adc	r31, r31
+ 224:	ee 0f       	add	r30, r30
+ 226:	ff 1f       	adc	r31, r31
+ 228:	ee 0f       	add	r30, r30
+ 22a:	ff 1f       	adc	r31, r31
+ 22c:	ef 59       	subi	r30, 0x9F	; 159
+ 22e:	ff 4f       	sbci	r31, 0xFF	; 255
+ 230:	e8 0f       	add	r30, r24
+ 232:	f1 1d       	adc	r31, r1
+
+	glcd_write_data(page_state);
+ 234:	c7 70       	andi	r28, 0x07	; 7
+ 236:	81 e0       	ldi	r24, 0x01	; 1
+ 238:	90 e0       	ldi	r25, 0x00	; 0
+ 23a:	02 c0       	rjmp	.+4      	; 0x240 <glcd_set_pixel+0x42>
+ 23c:	88 0f       	add	r24, r24
+ 23e:	99 1f       	adc	r25, r25
+ 240:	ca 95       	dec	r28
+ 242:	e2 f7       	brpl	.-8      	; 0x23c <glcd_set_pixel+0x3e>
+ 244:	90 81       	ld	r25, Z
+ 246:	89 2b       	or	r24, r25
+ 248:	0e 94 5d 00 	call	0xba	; 0xba <glcd_write_data>
+ }
+ 24c:	cf 91       	pop	r28
+ 24e:	08 95       	ret
+
+00000250 <main>:
+#include "glcd/glcd.h"
+
+
+int main(void)
+{
+   glcd_init();
+ 250:	0e 94 a4 00 	call	0x148	; 0x148 <glcd_init>
+
+   for (uint8_t i=0; i<64; i++)
+ 254:	c0 e0       	ldi	r28, 0x00	; 0
+   {
+	   glcd_set_pixel(30, i);
+ 256:	6c 2f       	mov	r22, r28
+ 258:	8e e1       	ldi	r24, 0x1E	; 30
+ 25a:	0e 94 ff 00 	call	0x1fe	; 0x1fe <glcd_set_pixel>
+
+int main(void)
+{
+   glcd_init();
+
+   for (uint8_t i=0; i<64; i++)
+ 25e:	cf 5f       	subi	r28, 0xFF	; 255
+ 260:	c0 34       	cpi	r28, 0x40	; 64
+ 262:	c9 f7       	brne	.-14     	; 0x256 <main+0x6>
+ 264:	19 c0       	rjmp	.+50     	; 0x298 <main+0x48>
+
+	   y++;
+	   
+	   if(y >= SCREEN_HEIGHT)
+	   {
+		   x++;
+ 266:	df 5f       	subi	r29, 0xFF	; 255
+		   y = 0;
+
+		   if(x >= SCREEN_WIDTH)
+ 268:	2a f4       	brpl	.+10     	; 0x274 <main+0x24>
+		   {
+			   x = 0;
+			   glcd_clear_all();
+ 26a:	0e 94 c8 00 	call	0x190	; 0x190 <glcd_clear_all>
+	   y++;
+	   
+	   if(y >= SCREEN_HEIGHT)
+	   {
+		   x++;
+		   y = 0;
+ 26e:	c0 e0       	ldi	r28, 0x00	; 0
+
+		   if(x >= SCREEN_WIDTH)
+		   {
+			   x = 0;
+ 270:	d0 e0       	ldi	r29, 0x00	; 0
+ 272:	01 c0       	rjmp	.+2      	; 0x276 <main+0x26>
+	   y++;
+	   
+	   if(y >= SCREEN_HEIGHT)
+	   {
+		   x++;
+		   y = 0;
+ 274:	c0 e0       	ldi	r28, 0x00	; 0
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 276:	2f ef       	ldi	r18, 0xFF	; 255
+ 278:	80 e7       	ldi	r24, 0x70	; 112
+ 27a:	92 e0       	ldi	r25, 0x02	; 2
+ 27c:	21 50       	subi	r18, 0x01	; 1
+ 27e:	80 40       	sbci	r24, 0x00	; 0
+ 280:	90 40       	sbci	r25, 0x00	; 0
+ 282:	e1 f7       	brne	.-8      	; 0x27c <main+0x2c>
+ 284:	00 c0       	rjmp	.+0      	; 0x286 <main+0x36>
+ 286:	00 00       	nop
+   uint8_t x = 0;
+   uint8_t y = 0;
+
+   while (1)
+   {
+	   glcd_set_pixel(x,y);
+ 288:	6c 2f       	mov	r22, r28
+ 28a:	8d 2f       	mov	r24, r29
+ 28c:	0e 94 ff 00 	call	0x1fe	; 0x1fe <glcd_set_pixel>
+
+	   y++;
+ 290:	cf 5f       	subi	r28, 0xFF	; 255
+	   
+	   if(y >= SCREEN_HEIGHT)
+ 292:	c0 34       	cpi	r28, 0x40	; 64
+ 294:	40 f7       	brcc	.-48     	; 0x266 <main+0x16>
+ 296:	ef cf       	rjmp	.-34     	; 0x276 <main+0x26>
+   uint8_t x = 0;
+   uint8_t y = 0;
+
+   while (1)
+   {
+	   glcd_set_pixel(x,y);
+ 298:	60 e0       	ldi	r22, 0x00	; 0
+ 29a:	80 e0       	ldi	r24, 0x00	; 0
+ 29c:	0e 94 ff 00 	call	0x1fe	; 0x1fe <glcd_set_pixel>
+
+	   y++;
+ 2a0:	c1 e0       	ldi	r28, 0x01	; 1
+   uint8_t x = 0;
+   uint8_t y = 0;
+
+   while (1)
+   {
+	   glcd_set_pixel(x,y);
+ 2a2:	d0 e0       	ldi	r29, 0x00	; 0
+ 2a4:	e8 cf       	rjmp	.-48     	; 0x276 <main+0x26>
+
+000002a6 <_exit>:
+ 2a6:	f8 94       	cli
+
+000002a8 <__stop_program>:
+ 2a8:	ff cf       	rjmp	.-2      	; 0x2a8 <__stop_program>
