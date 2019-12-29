@@ -44,9 +44,9 @@
 
  void alcd_command(uint8_t command)
  {
-	 CONTROL_PORT |= E; //E = 1 zbocze narastajace
+	 CONTROL_PORT |= E; //E = 1 Rising edge 
 	 DATA_PORT = command;
 	 _delay_us(30);
-	 CONTROL_PORT &= ~E; //E=0 Zbocze opadajace
+	 CONTROL_PORT &= ~E; //E=0 Falling edge 
 	 _delay_us(30);
  }
